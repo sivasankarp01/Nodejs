@@ -21,7 +21,12 @@ const registerUser = async (data) => {
     password: hashedPassword,
   });
 
-  return user;
+  const token = generateToken(user);
+
+  return {
+    user,
+    token,
+  };
 };
 
 const loginUser = async (data) => {

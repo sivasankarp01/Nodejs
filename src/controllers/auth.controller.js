@@ -19,12 +19,13 @@ exports.register = async (req, res, next) => {
       });
     }
 
-    const user = await registerUser(req.body);
+    const result = await registerUser(req.body);
 
     res.status(201).json({
       success: true,
       message: "User registered successfully",
-    //   data: user,
+      token: result.token,
+      user: result.user,
     });
   } catch (error) {
     next(error);
@@ -43,12 +44,13 @@ exports.login = async (req, res, next) => {
     }
 
     const result = await loginUser(req.body);
-
+    const userData = result.user.toJSON();
+    delete userData.password;
     res.status(200).json({
       success: true,
       message: "Login successful",
       token: result.token,
-      user: result.user,
+      user: userData,
     });
   } catch (error) {
     next(error);
